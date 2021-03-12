@@ -17,4 +17,9 @@ class Movie extends Model
         'homepage',
         'budget'
     ];
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

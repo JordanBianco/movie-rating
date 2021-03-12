@@ -1,5 +1,13 @@
 <x-guest-layout>
-    <div class="flex space-x-10">
+
+    <div class="my-6">
+        <button>
+            <a href="{{ route('movie.index') }}" class="hover:text-yellow-400">Back</a>
+        </button>    
+    </div>
+
+    {{-- Movie Details Section --}}
+    <div class="flex space-x-10 border-b border-gray-700 pb-16 mb-20">
         <div class="w-1/2">
             <img
                 src="https://source.unsplash.com/featured/?movies"
@@ -12,6 +20,9 @@
             <header class="space-y-1">
                 <h2 class="leading-5 text-2xl">{{ $movie->title }}</h2>
                 <p class="text-gray-400">{{ $movie->release_year }}</p>
+
+                {{-- component media voto livewire --}}
+                @livewire('avg-reviews', ['movie' => $movie])
             </header>
 
             <section>
@@ -27,4 +38,10 @@
 
         </div>
     </div>
+
+    {{-- Review Section --}}
+    <div class="mb-6">
+        @livewire('movie-reviews', ['movie' => $movie])
+    </div>
+
 </x-guest-layout>

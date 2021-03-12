@@ -20,7 +20,9 @@
     </head>
     <body class="min-h-screen bg-gray-800 text-gray-100">
         
-        <main class="w-4/5 my-10 mx-auto">
+        @include('layouts.navigation')
+
+        <main class="w-4/5 mx-auto">
             {{ $slot }}
         </main>
 
