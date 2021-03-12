@@ -12,5 +12,6 @@ require __DIR__.'/auth.php';
 Route::prefix('movies')->group(function() {
 
     Route::get('/', [MovieController::class, 'index'])->name('movie.index');
+    Route::get('/{movie:slug}', [MovieController::class, 'show'])->name('movie.show');
 
 });
