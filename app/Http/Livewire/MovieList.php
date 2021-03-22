@@ -21,6 +21,15 @@ class MovieList extends Component
         $this->voted = !$this->voted;
     }
 
+    public function toggleWatchlist($id)
+    {
+        if ( ! auth()->user()->watchlist()->pluck('movie_id')->contains($id)) {
+            auth()->user()->watchlist()->attach($id);
+        } else {
+            auth()->user()->watchlist()->detach($id);
+        }
+    }
+
     public function render()
     {
         if (!$this->voted) {

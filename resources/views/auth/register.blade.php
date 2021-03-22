@@ -19,11 +19,41 @@
                 <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
             </div>
 
+            <!-- Name -->
+            <div class="mt-4">
+                <x-label for="username" :value="__('Username')" />
+
+                <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus />
+            </div>
+
             <!-- Email Address -->
             <div class="mt-4">
                 <x-label for="email" :value="__('Email')" />
 
                 <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+            </div>
+
+            <!-- Birth date -->
+            <div class="mt-4">
+                <x-label for="birth_date" :value="__('Birth Date')" />
+
+                <x-input type="date" name="birth_date" id="birth_date" class="block mt-1 w-full" :value="old('birth_date')" required />
+            </div>
+
+            <!-- Gender -->
+            <div class="mt-4">
+                <x-label for="gender" :value="__('Gender')" />
+
+                <div class="flex items-center space-x-4">
+                    <x-input type="radio" id="gender" value="male" name="gender" required />
+                    <label for="male">Male</label><br>
+    
+                    <x-input type="radio" id="gender" value="female" name="gender" required />
+                    <label for="female">Female</label><br>
+    
+                    <x-input type="radio" id="gender" value="other" name="gender" required />
+                    <label for="other">Other</label><br>
+                </div>
             </div>
 
             <!-- Password -->

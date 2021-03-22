@@ -18,16 +18,23 @@
 
         @livewireStyles
     </head>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+    
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-800 text-gray-100">
+        <div class="min-h-screen bg-gray-100 text-gray-900">
             @include('layouts.navigation')
 
             <!-- Page Content -->
-            <main>
+            <main class="w-3/5 mx-auto">
                 {{ $slot }}
             </main>
         </div>
 
         @livewireScripts
+        <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js" data-turbolinks-eval="false" data-turbo-eval="false"></script>
     </body>
 </html>

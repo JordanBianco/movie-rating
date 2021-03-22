@@ -2,11 +2,15 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Feed;
 use App\Models\Review;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class MovieReviews extends Component
 {
+    use WithPagination;
+    
     public $movie;
 
     public $rating = 0;
@@ -15,8 +19,6 @@ class MovieReviews extends Component
     public $perPage = 5;
     public $order = 'latest';
     
-    public $success = false;
-
     protected $rules = [
         'rating' => 'required|numeric|min:1|max:5',
         'body' => 'required|max:500',
@@ -34,12 +36,19 @@ class MovieReviews extends Component
             'body' => $this->body,
         ]);
 
+        // Points to the User
+        auth()->user()->profile->points += 1;
+        auth()->user()->profile->save();
+
         $this->resetValue();
-
-        $this->success = true;
         
+        // Feedback to the user
         session()->flash('message', 'Grazie per la tua recensione!');
+        
+        // Close the Modal
+        $this->dispatchBrowserEvent('review-added');
 
+        // Update the average ratings of the movie
         $this->emit('review-added');
     }
 
@@ -55,6 +64,19 @@ class MovieReviews extends Component
         $this->reset(['rating', 'body']);
     }
 
+    public function toggleLike($id)
+    {
+        if ( ! auth()->user()->likes()->pluck('review_id')->contains($id)) {
+            auth()->user()->likes()->create([
+                'review_id' => $id
+            ]);
+
+        } else {
+            auth()->user()->likes()->where('review_id', $id)->delete();
+        }
+    }
+
+
     public function render()
     {
         switch ($this->order) {
@@ -62,6 +84,7 @@ class MovieReviews extends Component
                 $reviews = Review::where('movie_id', $this->movie->id)
                     ->latest()
                     ->with('author')
+                    ->withCount('likes')
                     ->paginate($this->perPage);
                 break;
 
@@ -69,6 +92,7 @@ class MovieReviews extends Component
                 $reviews = Review::where('movie_id', $this->movie->id)
                     ->oldest()
                     ->with('author')
+                    ->withCount('likes')
                     ->paginate($this->perPage);
                 break;
 
@@ -76,12 +100,14 @@ class MovieReviews extends Component
                 $reviews = Review::where('movie_id', $this->movie->id)
                     ->orderBy('rating', 'DESC')
                     ->with('author')
+                    ->withCount('likes')
                     ->paginate($this->perPage);
                 break;
             case 'low':
                 $reviews = Review::where('movie_id', $this->movie->id)
                     ->orderBy('rating', 'ASC')
                     ->with('author')
+                    ->withCount('likes')
                     ->paginate($this->perPage);
                 break;
         }

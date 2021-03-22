@@ -22,4 +22,9 @@ class Movie extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    public function watchlist()
+    {
+        return $this->belongsToMany(User::class, 'movie_user')->withTimestamps();
+    }
 }
